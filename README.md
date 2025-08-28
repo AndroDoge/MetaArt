@@ -2,16 +2,15 @@
 ```
  ________  ____   ____  ____  ____
 /__  ___/ / __ \ / __ \/ __ \/ __ \
-  / /    / /_/ // /_/ / /_/ / /_/ /
- / /    / .___/ \__, /\__, /\__, /
-/_/    /_/     /____//____//____/
+  / /    / /_/ // /_/ / /_/ / /_/ / 
+ / /    / .___/ \__, /\__, /\__, /  
+/_/    /_/     /____//____//____/   
    minimalist pulse & noise lab
-```
 
 Doom Taide fork – pieni orkestroitu kokeilulaboratorio jossa “noise” ja muut worker-prosessit tuottavat aineistoa jatkoanalyysille.
 
 ## Yleiskuva
-Tavoitteena on kevyt orkestrointi: yksi yksinkertainen `orchestrator_tasks.yml` määrittelee käynnistettävät prosessit (workerit). Tällä hetkellä keskiössä on `noise_metadata`, joka generoi pseudo-satunnaista (tai Markov‑ohjattua) metadatalähdettä analytiikan tai testisyötteen tarpeisiin. Projekti on tarkoituksella pieni, iteratiivinen ja vähän taiteellinen: kokeile, tallenna havainnot, muovaa eteenpäin.
+Tavoitteena on kevyt orkestrointi: yksi yksinkertainen `orchestrator_tasks.yml` määrittelee käynnistettävät prosessit (workerit). Tällä hetkellä keskiössä on `noise_metadata`, joka generoi entropiaa ja rytmiä Markov‑painotteisesti.
 
 ## Paikallinen nopea aloitus (Kuinka pääsen “nauttimaan”)
 1. Kloonaa repo  
@@ -92,6 +91,18 @@ tasks:
 | NOISE_PAYLOAD_ALPHABET | str | (sisäinen) | Merkkiryhmä jonka pohjalta basic-moodi arpoo | Markov ohittaa |
 
 Huom: ws = window size analytiikkaan (esim. entropialaskennan joustava näytealue).
+
+### Seeking Ympäristömuuttujat (uudet)
+| Nimi | Oletus | Kuvaus |
+|------|--------|--------|
+| NOISE_SEEK_LONELY_AFTER_S | 12 | Sekuntia ilman listeneriä -> siirtyy `seeking_low` |
+| NOISE_SEEK_ESCALATE_AFTER_S | 30 | Sekuntia ilman listeneriä -> `seeking_escalate` |
+| NOISE_SEEK_SHUTDOWN_AFTER_S | 120 | Sekuntia ilman listeneriä -> (MVP: pysyy escalate, tuleva: shutdown/commons) |
+| NOISE_SEEK_BEACON_INTERVAL_LOW_S | 10 | Minimi väli beaconille `seeking_low` tilassa |
+| NOISE_SEEK_BEACON_INTERVAL_ESC_S | 5 | Minimi väli beaconille `seeking_escalate` tilassa |
+| NOISE_SEEK_BEACON_PATH | runtime/beacons.jsonl | Beacon JSONL polku |
+| NOISE_SEEK_SUBSCRIPTIONS_PATH | runtime/subscriptions.json | Subscription JSON polku |
+| NOISE_STREAM_ID | noise_metadata | Streamin tunniste (jos override tarvitaan) |
 
 ## Markov-tilasiirtymät (B)
 Markov-moodi käyttää n-gram -pohjaista ketjua (oletuksena n=2 tai n=3). Tavoite: rytmisen “melkein-toistettavan” mutta vaihtelevan token-joukon generointi.
@@ -220,7 +231,17 @@ Kenttäideoita jatkoon:
 - stats.noise_level
 
 ## Seeking / Self-Seeking Streams (Experimentaalinen)
-Stream voi etsiä kuulijaa jos sitä ei kuunnella: “loneliness” (tuotetut vs. toimitetut) kasvaa -> beaconit JSON:iin -> listener-simulaatio poimii. Katso: [docs/SEEKING.md](./docs/SEEKING.md). Roadmap: v0.35–0.37.
+Stream voi etsiä kuulijaa jos sitä ei kuunnella: “loneliness” (tuotetut vs. toimitetut) kasvaa -> beaconit JSON:iin -> listener-simulaatio poimii. Katso: [docs/SEEKING.md](./docs/SEEKING.md)
+
+Pikakäyttö:
+```bash
+# Käynnistä noise (oma terminaali)
+./start.sh noise_metadata
+
+# (Toinen terminaali) Aja listener-sim
+python scripts/listener_sim.py
+# Kun listener liittyy, stream lopettaa beaconien lähetyksen (ATTACHED).
+```
 
 ## Design Principles (Brutalistinen sävy)
 Brutalismi tässä: paljastetaan rakenne, karsitaan ornamentti “valmiiksi” – annetaan rytmin ja raakojen arvojen muodostaa tekstuurinsa.
@@ -257,7 +278,7 @@ Milestone-kriteerit:
 - “Valmis” = spesifikaatio & test stub & dokumentaatio osuudelle.
 
 ## Filosofia (taidekulma)
-“Noise” nähdään tässä raaka‑aineena: ei pelkästään satunnaisuutena vaan rytmin ja rakenteen väreilynä. Tyhjällä kanavalla pienikin kuvio tuntuu merkitykselliseltä – eksplisiittiset funktiot (testisyöte, kuormasimulaatio) lomittuvat esteettiseen tarkasteluun (onko tempo ‘miellyttävä’?).
+“Noise” nähdään tässä raaka‑aineena: ei pelkästään satunnaisuutena vaan rytmin ja rakenteen väreilynä. Tyhjällä kanavalla pienikin kuvio tuntuu merkitykselliseltä – eksplisiittiset numerot ja entropia toimivat sekä instrumenttina että kanvaasina.
 
 ## Manifesto (E)
 Katso: [MANIFESTO.md](./MANIFESTO.md)
@@ -277,7 +298,6 @@ Katso: [MANIFESTO.md](./MANIFESTO.md)
 - [ ] Container / image build (Dockerfile + GitHub Actions)
 - [ ] Payload encoding / msgpack / delta (roadmap v0.8)
 - [ ] API / SDK (roadmap v0.9)
-- [ ] Lisenssin tarkistus (MIT ok? Vaihto tarvittaessa)
 - [ ] Seeking: loneliness counter coreen (v0.35)
 - [ ] Seeking: beacon JSON kirjoitus (v0.35)
 - [ ] Listener sim: basic subscription (v0.36)
