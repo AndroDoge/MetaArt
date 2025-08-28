@@ -219,6 +219,9 @@ Kenttäideoita jatkoon:
 - payload.encoding
 - stats.noise_level
 
+## Seeking / Self-Seeking Streams (Experimentaalinen)
+Stream voi etsiä kuulijaa jos sitä ei kuunnella: “loneliness” (tuotetut vs. toimitetut) kasvaa -> beaconit JSON:iin -> listener-simulaatio poimii. Katso: [docs/SEEKING.md](./docs/SEEKING.md). Roadmap: v0.35–0.37.
+
 ## Design Principles (Brutalistinen sävy)
 Brutalismi tässä: paljastetaan rakenne, karsitaan ornamentti “valmiiksi” – annetaan rytmin ja raakojen arvojen muodostaa tekstuurinsa.
 
@@ -235,16 +238,19 @@ Brutalismi tässä: paljastetaan rakenne, karsitaan ornamentti “valmiiksi” �
 
 ## Roadmap (C)
 ```
-v0.1  Pulse            : Perus tick + pulse, entropy & jitter (DONE / nearly)
-v0.2  Markov Bloom     : Markov order2, seed-lataus, deterministinen toisto
+v0.1  Pulse             : Perus tick + pulse, entropy & jitter (DONE / nearly)
+v0.2  Markov Bloom      : Markov order2, seed-lataus, deterministinen toisto
 v0.3  Observability Mesh: Laajennetut metrics (burst-score, jitter histogram)
-v0.4  Stream Ephemera  : Ephemeral buffer + kulutusrajapinta
-v0.5  TUI Entropy Scope: ASCII/TUI visualisaatio + interaktiivinen säätö
-v0.6  Container & CI    : Dockerfile, GitHub Actions, health checks
-v0.7  Multi-Mode Fusion : Burst / chain2 / adaptive intervals
-v0.8  Encoding Layer    : Payload compression / msgpack / delta
-v0.9  API / SDK         : Kuluttaja-rajapinta (pipe, unix socket, HTTP SSE)
-v1.0  Brutalist Core    : Vakaa interface + dokumentoitu contract
+v0.35 Seeking Presence  : Loneliness counter + beacon JSON MVP
+v0.36 Listener Adapter  : listener_sim.py (perus match)
+v0.37 Commons Merge     : Orpojen yhdistyminen 'commons' feediksi
+v0.4  Stream Ephemera   : Ephemeral buffer + kulutusrajapinta
+v0.5  TUI Entropy Scope : ASCII/TUI visualisaatio + interaktiivinen säätö
+v0.6  Container & CI     : Dockerfile, GitHub Actions, health checks
+v0.7  Multi-Mode Fusion  : Burst / chain2 / adaptive intervals
+v0.8  Encoding Layer     : Payload compression / msgpack / delta
+v0.9  API / SDK          : Kuluttaja-rajapinta (pipe, unix socket, HTTP SSE)
+v1.0  Brutalist Core     : Vakaa interface + dokumentoitu contract
 ```
 
 Milestone-kriteerit:
@@ -272,6 +278,10 @@ Katso: [MANIFESTO.md](./MANIFESTO.md)
 - [ ] Payload encoding / msgpack / delta (roadmap v0.8)
 - [ ] API / SDK (roadmap v0.9)
 - [ ] Lisenssin tarkistus (MIT ok? Vaihto tarvittaessa)
+- [ ] Seeking: loneliness counter coreen (v0.35)
+- [ ] Seeking: beacon JSON kirjoitus (v0.35)
+- [ ] Listener sim: basic subscription (v0.36)
+- [ ] Commons merge experiment (v0.37)
 
 ## (Valinnainen) Jatkokehityksen lisäpalikat
 A. Manifesti (tehty)  
