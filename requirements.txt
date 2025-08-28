@@ -12,3 +12,10 @@ typing-extensions>=4.12.0
 pydantic>=2.7.0
 rapidfuzz>=3.9.0
 psutil>=5.9.0
+python-multipart>=0.0.9
+requests>=2.31.0
+rich>=13.7.0
+# Optional developer convenience (uncomment if needed)
+# watchfiles>=0.21.0
+# security scanning (optional)
+# safety>=3.2.4
