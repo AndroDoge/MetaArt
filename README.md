@@ -139,8 +139,23 @@ Kenttäideoita jatkoon:
 - payload.encoding jos myöhemmin pakataan (esim. base64, delta)
 - stats.noise_level (heuristinen “intensity”)
 
+## Design Principles (Brutalistinen sävy)
+Brutalismi tässä: paljastetaan rakenne, karsitaan ornamentti “valmiiksi” – annetaan rytmin ja raakojen arvojen muodostaa tekstuurinsa.
+
+1. Exposed Structure: Konfiguraatio ja event payload pysyvät läpinäkyvinä; ei piilotettua taikaa.
+2. Deterministic Core, Stochastic Skin: Ydinlooppi selkeä; variaatio injektoidaan reunoilta parametrein.
+3. Composable Pulses: Tick -> Pulse -> (tuleva) Stream; kerrokset modulaarisia.
+4. Observability-First: Jokainen merkityksellinen muutos tuottaa mitattavan signaalin (entropy, jitter, burst-score).
+5. Constraint as Canvas: Rajoitettu parametriavaruus ohjaa luovuutta; pienet muutokset näkyvät.
+6. Playful Defaults: Oletukset tarkoituksella “elävät” mutta hallittavat.
+7. Minimal Persistence: Vain se mikä on analytiikalle tai toistettavuudelle välttämätöntä tallennetaan.
+8. Data Is Ornament: Ornamentti syntyy numeroiden rytmistä, ei erillisestä koristelusta.
+9. Progressive Disclosure: Ensin perus tick, vasta myöhemmin syvemmät Markov/metrics -kerrokset.
+10. Cheap to Reset: Koko ympäristö voidaan nollata nopeasti ilman monimutkaista tilansiivousta.
+
 ## TODO (elävä lista)
 - [x] Event payload esimerkit: `noise_start`, `noise_tick`, `noise_pulse` (schema + sample JSON).
+- [x] Design Principles (brutalistinen versio).
 - [ ] Ympäristömuuttuja-taulukko selitteillä (määrittele “token” ja “ws” tarkemmin).
 - [ ] Markov‑tilasiirtymien dokumentointi + mahdollinen siemenmateriaalin lataus.
 - [ ] “Ephemeral streaming” vaihe (rajattu puskurointi ja kulutus).
@@ -158,7 +173,6 @@ Kenttäideoita jatkoon:
 Ehdota / valitse jos haluat lisättäväksi seuraavassa commitissa:
 A. Manifesti erilliseksi tiedostoksi (MANIFESTO.md)
 B. ASCII‑banneri alkuun
-C. “Design principles” bulletit (Deterministic core, Composable pulses, Observability-first, Playful defaults)
 D. Roadmap-kaavio (tekstimuotoinen)
 E. Lyhyt “How to contribute jam session” -osio
 
