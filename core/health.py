@@ -14,12 +14,17 @@ Checks performed (all non-fatal unless marked *):
 Exit code:
   0 if no fatal errors
   1 if a fatal error (writability or hard parse failure) occurred
+
+Usage:
+  python -m core.health            # human-readable table
+  python -m core.health --json     # machine-readable JSON list
 """
 
 from __future__ import annotations
 import os
 import sys
 import json
+import argparse
 from pathlib import Path
 from typing import Any, List, Dict
 
@@ -54,6 +59,9 @@ class HealthReport:
         for i in self.items:
             lines.append(f"{i['check']:<{width}} {i['status']:>6}  {i['detail']}")
         return "\n".join(lines)
+
+    def to_json(self):
+        return self.items
 
 
 def check_python(report: HealthReport):
@@ -173,6 +181,10 @@ def check_import(report: HealthReport):
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--json", action="store_true", help="Output report as JSON list")
+    args = parser.parse_args()
+
     report = HealthReport()
     check_python(report)
     check_env(report)
@@ -183,7 +195,10 @@ def main():
     check_beacon_shape(report, beacons)
     check_target_presence(report, beacons)
 
-    print(report.render())
+    if args.json:
+        print(json.dumps(report.to_json(), indent=2))
+    else:
+        print(report.render())
     if report.fatal:
         sys.exit(1)
 
