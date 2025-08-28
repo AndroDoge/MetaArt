@@ -15,7 +15,9 @@ psutil>=5.9.0
 python-multipart>=0.0.9
 requests>=2.31.0
 rich>=13.7.0
+APScheduler>=3.10.4
 # Optional developer convenience (uncomment if needed)
 # watchfiles>=0.21.0
 # security scanning (optional)
 # safety>=3.2.4
+# pip-audit>=2.7.3
