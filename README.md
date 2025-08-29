@@ -1,5 +1,5 @@
 # rooms
-Doom Taide fork
+Noise you can't hear
 
 Tämä fork sisältää kokeellisen "orchestrator + adaptiiviset workerit" -mallin, jossa eri prosessit käynnistyvät tai sammuvat websocket-klienttien määrän ja hiljaisuustilan (quiet mode) perusteella.
 
