@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Syndicate Radio Status Artifact</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    body { font-family: system-ui, sans-serif; background:#0d0d14; color:#eee; margin:0; padding:2rem; }
+    h1 { font-size:1.3rem; margin-top:0; letter-spacing:0.05em; }
+    pre { background:#161622; padding:1rem; border-radius:8px; overflow:auto; }
+    .badge { display:inline-block; background:#272740; padding:.4rem .7rem; border-radius:999px; font-size:.75rem; margin-right:.5rem; }
+    footer { margin-top:2rem; font-size:.65rem; opacity:.6; }
+    a { color:#6fb3ff; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+  </style>
+</head>
+<body>
+  <h1>Syndicate Radio Artifact</h1>
+  <p>This static HTML artifact echoes a structured status object. You can control the numeric status via the <code>?status=</code> query parameter. If omitted it defaults to 503.</p>
+  <div class="badge" id="statusBadge">status: -</div>
+  <pre id="jsonBlock" aria-label="JSON output"></pre>
+  <script>
+    (function() {
+      function parseStatus() {
+        const params = new URLSearchParams(window.location.search);
+        const raw = params.get('status');
+        const n = raw === null ? 503 : parseInt(raw, 10);
+        return Number.isFinite(n) ? n : 503;
+      }
+      const status = parseStatus();
+      const obj = {
+        data: { error: 'Welcome to listen Syndicate radio.' },
+        success: false,
+        status: status
+      };
+      document.getElementById('statusBadge').textContent = 'status: ' + status;
+      const jsonEl = document.getElementById('jsonBlock');
+      jsonEl.textContent = JSON.stringify(obj, null, 2);
+      // Optionally expose as global for automated scraping tools
+      window.__SYNDICATE_STATUS__ = obj;
+    })();
+  </script>
+  <footer>
+    Generated artifact. Modify at <code>artifacts/welcome.html</code>. Query example: <code>?status=200</code>
+  </footer>
+</body>
+</html>
